@@ -24,6 +24,8 @@ io.on('connection', (socket)=>{
         console.log('FAIL: File could NOT be saved');
       }else{
         console.log('SUCCESS: File SAVED on server');
+        socket.emit('image', { image: true, buffer: file.buffer.toString('base64'), params:params});
+
       }
     });
     // console.log(file);
@@ -33,9 +35,10 @@ io.on('connection', (socket)=>{
     //   params: {sender: 'SERVER'}
     // });
     fs.readFile(__dirname + file.name, function(err, buf){
+    console.log('\n\nPARAMS: box', params);
     // it's possible to embed binary data
     // within arbitrarily-complex objects
-    socket.emit('image', { image: true, buffer: file.buffer.toString('base64')});
+    // socket.emit('image', { image: true, buffer: file.buffer.toString('base64'), params:params});
     console.log('image file is initialized');
   });
     // delivery.send({

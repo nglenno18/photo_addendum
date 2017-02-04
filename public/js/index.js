@@ -1,37 +1,58 @@
 var socket = io();
 
-var fd = function(evt){
-  // var thefile = document.getElementById('thefile');
-  // alert(thefile.value);
-  console.log(event);
-  console.log(event.srcElement);
-  clickedElement = event.srcElement;
-  var file = event.srcElement.files[0].name;
 
-  var extension = file.substring(file.lastIndexOf('.'));
-  console.log(extension);
-  acceptable = event.srcElement.accept.split(',')
-  var acc = false;
-  acceptable.forEach((ex)=>{
-    console.log('ext: ',ex);
-    if(ex === extension) acc = true;
-  });
-  if(!acc)return alert('File must be an image (".png", ".jpg")');
-  // console.log('THIS.VAL(): ', $(this).val());
-  alert(clickedElement.value);
-  // clickedElement.on('change', function(){
-  //   var files = $(this).get(0).files;
-  //   console.log(files);
-  // });
-  var i = event.srcElement.files[0].File;
-  // console.log(event.srcElement.files[0]);
-  var img = new Image();
-  console.log(i);
-  img.src = 'data:image/jpeg;base64,'+ i.buffer.toString('base64');
-  // console.log("IMAGE received from server", img);
-  // $('#box3').html('<img src="data:image/png;base64,' + i.buffer.toString('base64') + '" />')
-  $('#box3').html('img')
-}
+// var fd = function(evt){
+//
+//   console.log(event);
+//   console.log(event.srcElement);
+//   clickedElement = event.srcElement;
+//   var file = event.srcElement.files[0].name;
+//
+//   var extension = file.substring(file.lastIndexOf('.'));
+//   console.log(extension);
+//   acceptable = event.srcElement.accept.split(',')
+//   var acc = false;
+//   acceptable.forEach((ex)=>{
+//     console.log('ext: ',ex);
+//     if(ex === extension) acc = true;
+//   });
+//   if(!acc)return alert('File must be an image (".png", ".jpg")');
+//   // console.log('THIS.VAL(): ', $(this).val());
+//   alert(clickedElement.value);
+//   // clickedElement.on('change', function(){
+//   //   var files = $(this).get(0).files;
+//   //   console.log(files);
+//   // });
+//
+//   var length = event.srcElement.files.length;
+//   for(i = 0; i <=(length-2)/2; i++){
+//     console.log('\n\n\n\n\nADD ROWS');
+//     $('#add-row').click();
+//   }
+//   var index = 1;
+//   for(x = 0; x < length; x++){
+//     var i = event.srcElement.files[x];
+//     console.log(i);
+//     i = URL.createObjectURL(i);
+//     var img = new Image();
+//     // img.src = "data:image/png;base64," + event.srcElement.files[x].toString('Base64');
+//     // img.src = "data:image/png;base64," + i.toString('base64');
+//
+//     img.src = i;
+//     var canvas = document.createElement('canvas');
+//     canvas.width = img.width;
+//     canvas.height = img.height;
+//     canvas.getContext('2d').drawImage(img, 0,0);
+//     dataURI = canvas.toDataURL();
+//     console.log(dataURI);
+//
+//
+//     var h;
+//     var w;
+//     $('#box'+index).html('<img src="' + i + '"/>');
+//     index++;
+//   }
+// }
 var w = 1;
 var t=1;
 
@@ -42,147 +63,65 @@ socket.on('connect', function(){
   var delivery = new Delivery(socket);
 
   delivery.on('delivery.connect', function(delivery){
-
-    $('#fileDialog').on('click', function(param){
-      console.log('\n\n\nPARAMS', param);
-      $('#fileDialog').change(function(evt) {
-        // console.log(evt.currentTarget.accept);
-        console.log(evt);
-        var boxid = evt.currentTarget;
-
-        console.log('\n\n\n\n Current Target:', boxid);
+    $('#fd').on('click', function(){
+      $('#fd').on('change', function(evt){
         var files = evt.currentTarget.files;
-        var length = files.length;
-        console.log('\n\n\n\nLENGTHHH', length);
-
-        for(i = 0; i <=length-2/2; i++){
+        var length = event.currentTarget.files.length;
+        for(i = 0; i <=(length-2)/2; i++){
           console.log('\n\n\n\n\nADD ROWS');
           $('#add-row').click();
         }
 
-        for(i = 0; i <= length; i++){
-          var file = evt.currentTarget.files[0].name;
+        // var extraParams = {box: length};
+        // delivery.send(evt.currentTarget.files, extraParams);
 
-          var extension = file.substring(file.lastIndexOf('.'));
-          console.log(extension);
-          acceptable = evt.currentTarget.accept.split(',')
-          var acc = false;
-          acceptable.forEach((ex)=>{
-            console.log('ext: ',ex);
-            if(ex === extension) acc = true;
-          });
-          if(!acc)return alert('File must be an image (".png", ".jpg")');
-          console.log('THIS.VAL(): ', $(this).val());
+        var index = 1;
+        for(x = 0; x < length; x++){
+          var i = event.currentTarget.files[x];
+          // console.log(i);
+          i = URL.createObjectURL(i);
+          var img = new Image();
+          // img.src = "data:image/png;base64," + event.srcElement.files[x].toString('Base64');
+          // img.src = "data:image/png;base64," + i.toString('base64');
 
-          var extraParams = {sender: socket.id};
-          delivery.send(evt.currentTarget.files[0], extraParams);
-          console.log('FILEEEEE', evt.currentTarget.files[0]);
+          var extraParams = {box: '#box'+index};
+          index++;
 
-          //find the source of the click (which box?)
-            //add th image in that box
-            console.log(file);
-
-            socket.on('image', function(info){
-              var ctx =$('#box2')[0].firstElementChild;
-              console.log('socket on image', ctx);
-              // ctx = ctx.getContext('2d');
-              console.log(info);
-              if(info.image){
-                var img = new Image();
-                img.src = 'data:image/jpeg;base64,'+ info.buffer;
-                // console.log("IMAGE received from server", img);
-                $('#box3').html('<img src="data:image/png;base64,' + info.buffer + '" />')
-                // callback('<img src="data:image/png;base64,' + info.buffer + '" />');
-                $('#box'+t).html('<img src="data:image/png;base64,' + info.buffer + '" />');
-                t+=1;
-              }
-            });
+          delivery.send(evt.currentTarget.files[x], extraParams);
+          // delivery.on('send.success', function(fileUID){
+          //   console.log('FILEUID: ', fileUID);
+          //   console.log('File was successfully sent!');
+          //   // var path = "/../" + fileUID.name;
+          //   // $('#box2-image').attr("src", fileUID.name);
+          // });
+          var h;
+          var w;
+          $('#box'+index).html('<img src="' + i + '"/>');
         }
       });
     });
-
-    // $('#fileDialog').on('click', function(param){
-    //   console.log('\n\n\nPARAMS', param);
-    //   $('#fileDialog').change(function(evt) {
-    //     // console.log(evt.currentTarget.accept);
-    //     console.log(evt);
-    //     var boxid = evt.currentTarget;
-    //
-    //     console.log('\n\n\n\n Current Target:', boxid);
-    //     var file = evt.currentTarget.files[0].name;
-    //
-    //     var extension = file.substring(file.lastIndexOf('.'));
-    //     console.log(extension);
-    //     acceptable = evt.currentTarget.accept.split(',')
-    //     var acc = false;
-    //     acceptable.forEach((ex)=>{
-    //       console.log('ext: ',ex);
-    //       if(ex === extension) acc = true;
-    //     });
-    //     if(!acc)return alert('File must be an image (".png", ".jpg")');
-    //     console.log($(this).val());
-    //
-    //     var extraParams = {sender: socket.id};
-    //     delivery.send(evt.currentTarget.files[0], extraParams);
-    //     console.log(evt.currentTarget.files[0]);
-    //     // $('#box2-image').attr("src", evt.currentTarget.files[0].name);
-    //
-    //     //find the source of the click (which box?)
-    //       //add th image in that box
-    //       console.log(file);
-    //       // var path = "../" + file.toString();
-    //       // var path = "../photo2.jpg"
-    //       // console.log(path);
-    //       socket.on('image', function(info){
-    //         var ctx =$('#box2')[0].firstElementChild;
-    //         console.log(ctx);
-    //         // ctx = ctx.getContext('2d');
-    //         console.log(info);
-    //         if(info.image){
-    //           var img = new Image();
-    //           img.src = 'data:image/jpeg;base64,'+info.buffer;
-    //           // console.log("IMAGE received from server", img);
-    //           $('#box2').html('<img src="data:image/png;base64,' + info.buffer + '" />')
-    //
-    //         }
-    //       });
-    //   });
-    // });
-
-    delivery.on('send.success', function(fileUID){
-      // console.log(fileUID);
-      console.log('File was successfully sent!');
-      // var path = "/../" + fileUID.name;
-      // $('#box2-image').attr("src", fileUID.name);
-    });
-    // delivery.on('receive.start', function(fileUID){
-    //   console.log(`Client recieving a file ${fileUID.name}`);
-    // });
-    //
-    // delivery.on('receive.success', function(file){
-    //   var params = file.params;
-    //   if(file.isImage()){
-    //     $('#box2-image').attr("src", file.dataURL());
-    //   }
-    // });
   });
 
-// socket.on('image', function(info){
-//   var ctx =$('#box2')[0].firstElementChild;
-//   console.log(ctx);
-//   // ctx = ctx.getContext('2d');
-//   console.log(info);
-//   if(info.image){
-//     var img = new Image();
-//     img.src = 'data:image/jpeg;base64,'+info.buffer;
-//     console.log("IMAGE received from server", img);
-//     $('#box2').html('<img src="data:image/png;base64,' + info.buffer + '" />')
-//
-//   }
-// });
+
+
+
+  socket.on('image', function(info){
+    console.log('\n\n\nINFO: ', info);
+    var box = info.params.box;
+    var ctx =$(box)[0].firstElementChild;
+    console.log(ctx);
+    // ctx = ctx.getContext('2d');
+    if(info.image){
+      var img = new Image();
+      img.src = 'data:image/jpeg;base64,'+info.buffer;
+      console.log("IMAGE received from server for box#: ", box);
+
+      $(box).html('<img src="data:image/png;base64,' + info.buffer + '" />')
+    }
+  });
 
   $('#add-row').on('click', function(i){
-    w+=1;
+    w+=2;
     console.log('ADD a new Row!!', w);
     var n = document.getElementById('au'); //returns a HTML DOM Object
     // console.log(n);
@@ -191,11 +130,34 @@ socket.on('connect', function(){
     console.log(dupNode.children[0].children);
     var b1 = dupNode.children[0].children[0];
     var b2 = dupNode.children[0].children[2];
+    var sp1 = dupNode.children[0].children[1];
+    var br1 = dupNode.children[1];
+    console.log('BREAK???: ', br1);
+    console.log('SPACE??? ', sp1);
+
+    sp1.id = sp1.id + w;
+    br1.id = br1.id +w;
+    dupNode.id = dupNode.id + w;
+
     b1.id = "box"+ w;
-    console.log(b1);
+    // $('#'+b1.id).css("margin-left", "20px");
+    // $('#'+b1.id).css("float", "left");
+    // $('#'+b1.id +' img').css("width", "90% !important");
+    //
+    //
+    // console.log('BOX1: ', b1);
+    //
+    b2.id = "box"+ (w+1);
+    // $('#'+b2.id).css("margin-right", "20px");
+    // $('#'+b2.id).css("float", "right");
+    // $('#'+b2.id).css("width", "300px");
+    // $('#'+b2.id).css("border", "2px black solid");
+    // console.log('BOX2: ', b2);
+
     // dupNode.attr("box1","box"+w);
     var doc = document.getElementById("page-container");
     doc.appendChild(dupNode);
+    console.log(dupNode);
 
     // document.append(dupNode);
   });

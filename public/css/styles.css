@@ -57,10 +57,13 @@ footer{
   width: 720px;
   padding-bottom:50px;
 }
-#add-row:hover{
+#add-row{
+  display: none;
+}
+#add-images:hover{
   cursor: pointer;
 }
-#add-row:active{
+#add-images:active{
   border: 20px;
   position:relative;
   top: 8px;
@@ -69,25 +72,43 @@ footer{
 #add-icon{
   width: 60px;
 }
-#box1{
+.box1{
   width:300px;
   height:300px;
   border:2px black solid;
   float:left;
   margin-left:20px;
 }
-#box2{
+.box2{
   width:300px;
   height:300px;
   border:2px black solid;
   float:right;
   margin-right:20px;
 }
+.box{
+  width:300px !important;
+  height:300px !important;
+  border:2px black solid !important;
+  /*margin-right:20px;*/
+}
 .box:hover{
   cursor:pointer;
 }
-.box img{
+.box1 img{
   width:90%;
+  height:90%;
+  object-fit: contain;
+  /*object-position:50% 50%;*/
+  /*object-fit: contain;*/
+  margin:15px;
+  margin-bottom:20px;
+  align-content:center;
+}
+.box2 img{
+  width:90%;
+  height:90%;
+  object-fit: contain;
   margin:15px;
   margin-bottom:20px;
   align-content:center;
@@ -95,10 +116,17 @@ footer{
 .box input{
   display:none;
 }
+#mid-body input{
+  padding-top: 5px;
+  padding-left: 5px;
+}
+#fd{
+  display: none;
+}
 #fileDialog{
   display:none;
 }
-#space{
+.space{
   width:20px;
   border-top:#fff;
   float:left;

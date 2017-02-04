@@ -14,14 +14,14 @@
     <!-- <p><a href="">More information...</a></p> -->
     <div id="au">
       <span class="row">
-        <a class="box" id="box1">
+        <a class="box1" id="box1">
           <img class="img" src="images/temp2.png" align="center"></img>
           <!-- <input id="fileDialog" type="file" accept=".png,.jpg" nwworkingdir="C:\"/> -->
         </a>
-        <span id="space">f</span>
-        <a class="box" id="box2"><!--onclick="fileDialog.click()"-->
+        <span class="space">f</span>
+        <a class="box2"  id="box2"><!--onclick="fileDialog.click()"-->
           <!-- <input class="fd" type="file" accept=".png,.jpg" nwworkingdir="C:\" onclick="fd()"/> -->
-          <img class="img" id="box2-image" src="images/temp2.png" align="center"></img>
+          <img class="img" src="images/temp2.png" align="center"></img>
           Front
         </a>
       </span>
@@ -35,51 +35,13 @@
 
   </div>
 
+  <!-- <input class="fd" type="file" accept=".png,.jpg,.JPG,.PNG" onchange="fd()" multiple/> -->
 </div>
 
-
-<div id="page-container2">
-    <h1>Photo Addendum</h1>
-    <p>Click a box, launch a file dialog, select a photo, add description</p>
-    <!-- <p><a href="">More information...</a></p> -->
-    <div id="au">
-      <span class="row">
-        <a class="box" id="box1">
-          <img class="img" src="images/temp2.png" align="center"></img>
-          <!-- <input id="fileDialog" type="file" accept=".png,.jpg" nwworkingdir="C:\"/> -->
-        </a>
-        <span id="space">f</span>
-
-        <span class="b">
-          <a class="box" id="box2"><!--onclick="fileDialog.click()"-->
-            <img class="img" id="box2-image" src="images/temp2.png" align="center"></img>
-            Front
-            <br>f<br>
-            <!-- <input class="fd" type="file" accept=".png,.jpg" margin-top="30px" onchange="fd()"/> -->
-          </a>
-          <input class="fd" type="file" accept=".png,.jpg,.JPG,.PNG" onchange="fd()"/>
-          <input class="fd" type="file" accept=".png,.jpg,.JPG,.PNG" onchange="fd()"/>
-
-        </span>
-
-
-      </span>
-      <div id="break">
-        <br>
-        asdfasdfsd
-        <br>
-        <br>
-        <br>
-      </div>
-
-  </div>
-</div>
 <div id="mid-body">
   <a id="add-row"><img id="add-icon" src="images/add_icon.png"/></img></a>
-  <input id="fileDialog" type="file" accept=".png,.jpg" nwworkingdir="C:\" multiple/>
-  <a class="boxtemp" id="box3">
-      <img id="tempimg" src="">    <!-- <input id="fileDialog" type="file" accept=".png,.jpg" nwworkingdir="C:\"/> -->
-  </a>
+  <a id="add-images" onclick="$('#fd').click()"><img id="add-icon" src="images/add_icon.png"/></img></a>
+  <input id="fd" type="file" accept=".png,.jpg,.JPG,.PNG" onchange="fd()" multiple/>
 </div>
 
 
@@ -107,38 +69,10 @@
 
     $('#cmd').click(function() {
         pdf.addHTML($('#page-container'),function() {
+          
           pdf.save('web.pdf');
         });
     });
-    </script>
-
-
-    <script>
-      // var fd = function(evt){
-      //   // var thefile = document.getElementById('thefile');
-      //   // alert(thefile.value);
-      //   console.log(event);
-      //   console.log(event.srcElement);
-      //   clickedElement = event.srcElement;
-      //   var file = event.srcElement.files[0].name;
-      //
-      //   var extension = file.substring(file.lastIndexOf('.'));
-      //   console.log(extension);
-      //   acceptable = event.srcElement.accept.split(',')
-      //   var acc = false;
-      //   acceptable.forEach((ex)=>{
-      //     console.log('ext: ',ex);
-      //     if(ex === extension) acc = true;
-      //   });
-      //   if(!acc)return alert('File must be an image (".png", ".jpg")');
-      //   // console.log('THIS.VAL(): ', $(this).val());
-      //   alert(clickedElement.value);
-      //   // clickedElement.on('change', function(){
-      //   //   var files = $(this).get(0).files;
-      //   //   console.log(files);
-      //   // });
-      //
-      // }
     </script>
     <script>
     var arrayWithElements = new Array();
@@ -158,32 +92,9 @@
         var ele = clickedElement.parentNode;
         var isBox = clickedElement.parentNode.className;
         if(isBox == "box"){
-          $('#fileDialog').click().after(function(){
-            // alert("dfasfdasfds");
 
-            // $('#box3').on('DOMNodeInserted', function () {
-            //   console.log();
-            //   console.log(isBox);
-            //   console.log(ele.id);
-            //   var proof = $('#box3 img');
-            //   // console.log(proof.attr('src'));
-            //   $('#'+ele.id).html('<img src=' + proof.attr('src') + ' />');
-            //   $('#box3').empty();
-            //   console.log(proof);
-            // //  alert(ele.className);
-            // });
-            var target = $('#box3');
-            console.log(target);
-
-          });
-          $('#fileDialog').click(this,function(){
-            console.log('khfkashdgkha');
-          });
           }
         }
-
-
-
     </script>
 </footer>
 
