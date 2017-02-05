@@ -1,58 +1,36 @@
 var socket = io();
+var prevBoxid;
 
+var selectBox = function(ev){
+  console.log('SELECT BOX: ', ev);
 
-// var fd = function(evt){
-//
-//   console.log(event);
-//   console.log(event.srcElement);
-//   clickedElement = event.srcElement;
-//   var file = event.srcElement.files[0].name;
-//
-//   var extension = file.substring(file.lastIndexOf('.'));
-//   console.log(extension);
-//   acceptable = event.srcElement.accept.split(',')
-//   var acc = false;
-//   acceptable.forEach((ex)=>{
-//     console.log('ext: ',ex);
-//     if(ex === extension) acc = true;
-//   });
-//   if(!acc)return alert('File must be an image (".png", ".jpg")');
-//   // console.log('THIS.VAL(): ', $(this).val());
-//   alert(clickedElement.value);
-//   // clickedElement.on('change', function(){
-//   //   var files = $(this).get(0).files;
-//   //   console.log(files);
-//   // });
-//
-//   var length = event.srcElement.files.length;
-//   for(i = 0; i <=(length-2)/2; i++){
-//     console.log('\n\n\n\n\nADD ROWS');
-//     $('#add-row').click();
-//   }
-//   var index = 1;
-//   for(x = 0; x < length; x++){
-//     var i = event.srcElement.files[x];
-//     console.log(i);
-//     i = URL.createObjectURL(i);
-//     var img = new Image();
-//     // img.src = "data:image/png;base64," + event.srcElement.files[x].toString('Base64');
-//     // img.src = "data:image/png;base64," + i.toString('base64');
-//
-//     img.src = i;
-//     var canvas = document.createElement('canvas');
-//     canvas.width = img.width;
-//     canvas.height = img.height;
-//     canvas.getContext('2d').drawImage(img, 0,0);
-//     dataURI = canvas.toDataURL();
-//     console.log(dataURI);
-//
-//
-//     var h;
-//     var w;
-//     $('#box'+index).html('<img src="' + i + '"/>');
-//     index++;
-//   }
-// }
+  console.log('prev ID: ', prevBoxid);
+
+  var highlighted = document.getElementById('selectedBox');
+  if(highlighted){// highlighted box
+    console.log('HIGHLIGHTED BOX: ', highlighted);
+    $('add-images').css("display", "none");
+    // $('add-icon').css("visibility", "hidden");
+    if(ev.id != "selectedBox"){ //this ISN't the highlighted box
+    console.log('THIS SHOULD NOT the selected bx', ev.id);
+      highlighted.id = prevBoxid;
+      // ev.id = "selectedBox";
+    }else{//this IS ALREADY the selected box
+      console.log('THIS is Already HIGHLIGHTED');
+      ev.id = prevBoxid;
+    }
+  }else{  //no highlighted box
+    console.log('THERE ARE NO HIGHLIGHTED BOXES');
+    prevBoxid = ev.id;
+    ev.id = "selectedBox";
+    $('#add-images').css('display', 'block');
+
+    // $('add-images').css("display", "inline-block");
+    console.log('SHOULD DISPLAY ADD BUTTON');
+    // $('add-icon').attr("visibility", "visible");
+  }
+}
+
 var w = 1;
 var t=1;
 
@@ -64,6 +42,7 @@ socket.on('connect', function(){
 
   delivery.on('delivery.connect', function(delivery){
     $('#fd').on('click', function(){
+      var selectedBox = document.getElementById('selectedBox');
       $('#fd').on('change', function(evt){
         var files = evt.currentTarget.files;
         var length = event.currentTarget.files.length;
@@ -76,18 +55,18 @@ socket.on('connect', function(){
         // delivery.send(evt.currentTarget.files, extraParams);
 
         var index = 1;
-        for(x = 0; x < length; x++){
-          var i = event.currentTarget.files[x];
+        // for(x = 0; x < length; x++){
+          var i = event.currentTarget.files[0];
           // console.log(i);
           i = URL.createObjectURL(i);
           var img = new Image();
           // img.src = "data:image/png;base64," + event.srcElement.files[x].toString('Base64');
           // img.src = "data:image/png;base64," + i.toString('base64');
 
-          var extraParams = {box: '#box'+index};
+          var extraParams = {box: prevBoxid};
           index++;
 
-          delivery.send(evt.currentTarget.files[x], extraParams);
+          delivery.send(evt.currentTarget.files[0], extraParams);
           // delivery.on('send.success', function(fileUID){
           //   console.log('FILEUID: ', fileUID);
           //   console.log('File was successfully sent!');
@@ -96,8 +75,9 @@ socket.on('connect', function(){
           // });
           var h;
           var w;
-          $('#box'+index).html('<img src="' + i + '"/>');
-        }
+          // $('#box'+index).html('<img src="' + i + '"/>');
+
+        // }
       });
     });
   });
@@ -106,9 +86,13 @@ socket.on('connect', function(){
 
 
   socket.on('image', function(info){
+    var correctBox = document.getElementById('selectedBox');
     console.log('\n\n\nINFO: ', info);
+    console.log('SELECTED BOX: ', correctBox);
+    if(correctBox) correctBox.id = info.params.box;
+
     var box = info.params.box;
-    var ctx =$(box)[0].firstElementChild;
+    var ctx =$('#'+ box)[0].firstElementChild;
     console.log(ctx);
     // ctx = ctx.getContext('2d');
     if(info.image){
@@ -116,7 +100,8 @@ socket.on('connect', function(){
       img.src = 'data:image/jpeg;base64,'+info.buffer;
       console.log("IMAGE received from server for box#: ", box);
 
-      $(box).html('<img src="data:image/png;base64,' + info.buffer + '" />')
+      $('#'+box).html('<img src="data:image/png;base64,' + info.buffer + '" />')
+      $('#add-images').css('display', 'none');
     }
   });
 

@@ -14,15 +14,17 @@
     <!-- <p><a href="">More information...</a></p> -->
     <div id="au">
       <span class="row">
-        <a class="box1" id="box1">
+        <a class="box1" id="box1" onclick="selectBox(this)">
           <img class="img" src="images/temp2.png" align="center"></img>
           <!-- <input id="fileDialog" type="file" accept=".png,.jpg" nwworkingdir="C:\"/> -->
+          <!-- <input type="text" align="center"/> -->
         </a>
         <span class="space">f</span>
-        <a class="box2"  id="box2"><!--onclick="fileDialog.click()"-->
+        <a class="box2"  id="box2" onclick="selectBox(this)"><!--onclick="fileDialog.click()"-->
           <!-- <input class="fd" type="file" accept=".png,.jpg" nwworkingdir="C:\" onclick="fd()"/> -->
           <img class="img" src="images/temp2.png" align="center"></img>
-          Front
+          <br>
+          <!-- <input type="text" align="center"/> -->
         </a>
       </span>
       <div id="break">
@@ -39,9 +41,10 @@
 </div>
 
 <div id="mid-body">
-  <a id="add-row"><img id="add-icon" src="images/add_icon.png"/></img></a>
+  <div class="clear-float"></div>
+  <a id="add-row"><img src="images/down.png"/></img></a>
   <a id="add-images" onclick="$('#fd').click()"><img id="add-icon" src="images/add_icon.png"/></img></a>
-  <input id="fd" type="file" accept=".png,.jpg,.JPG,.PNG" onchange="fd()" multiple/>
+  <input id="fd" type="file" accept=".png,.jpg,.JPG,.PNG" multiple/>
 </div>
 
 
@@ -65,12 +68,17 @@
   <input id="btn" type="button" value="click" OnClick="display(this);" />
 
     <script>
+    var pagelength = $(document).height();
+    var pagewidth = $('#page_container').width();
+    console.log('PAGE HEIGHT: ', pagelength);
+    console.log('PAGE WIDTH: ', pagewidth);
     var pdf = new jsPDF('p','pt','a4');
 
     $('#cmd').click(function() {
-        pdf.addHTML($('#page-container'),function() {
-          
-          pdf.save('web.pdf');
+        // pdf.addHTML($('#page-container'),function() {
+        pdf.addHTML(document.body,function() {
+
+          // pdf.save('web.pdf');
         });
     });
     </script>

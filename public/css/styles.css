@@ -58,10 +58,22 @@ footer{
   padding-bottom:50px;
 }
 #add-row{
-  display: none;
+  /*display: none;*/
+}
+#add-images{
+  display:none;
+  float:right;
 }
 #add-images:hover{
   cursor: pointer;
+}
+#add-row img{
+  width: 50px;
+}
+#add-row:active{
+  border: 20px;
+  position:relative;
+  top: 8px;
 }
 #add-images:active{
   border: 20px;
@@ -91,6 +103,9 @@ footer{
   height:300px !important;
   border:2px black solid !important;
   /*margin-right:20px;*/
+}
+#selectedBox{
+  border: 13px solid blue;
 }
 .box:hover{
   cursor:pointer;
