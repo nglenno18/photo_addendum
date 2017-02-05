@@ -60,64 +60,55 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-
-  <script>
-
-  </script>
+  <script src="/js/libs/dom-to-image.js"></script>
 
   <input id="btn" type="button" value="click" OnClick="display(this);" />
 
     <script>
-    var pagelength = $(document).height();
-    var pagewidth = $('#page_container').width();
-    console.log('PAGE HEIGHT: ', pagelength);
-    console.log('PAGE WIDTH: ', pagewidth);
+    var node = document.body;
+    var htmlimage;
+    l = { orientation: 'p', unit: 'pt', format: 'a3', compress: true, fontSize: 8, lineHeight: 0, autoSize: false, printHeaders: true, pagesplit: true };
+
+    var doc = new jsPDF(l);
+
+    // doc.addHTML($('elementHTML'),{format:'png',pagesplit: true}});
     var pdf = new jsPDF('p','pt','a4');
 
     $('#cmd').click(function() {
-        // pdf.addHTML($('#page-container'),function() {
-        // pdf.addHTML(document.body,function() {
-        //
-        //   // var ctx = container.getContext('2d');
-        //   // var cdata = ctx.getImageData(0,0,100,100);
-        //   // console.log(ctx);
-        //   // console.log(cdata);
-        //   // pdf.save('web.pdf');
-        //   // pdf();
-        // });
-        // var container = document.getElementById('page-container');
-        // var rows = document.getElementsByClassName('row');
-        // console.log('ROWS:', rows);
-        // var length = rows.length-1;
-        // for(i = 0; i <=length; i++){
-        //   var els = rows[i].children;
-        //   console.log('CHILDREN: for row ', els);
-        //   console.log();
-        //   var b1 = els[0];
-        //   var b2 = els[2];
-        //   console.log('B1:', b1);
-        //   console.log('B2:', b2);
-        //   pdf.addHTML($('#'+b1.id), function(){
-        //     console.log('First box attached: ', b1);
-        //   });
-        //   pdf.addHTML($('#'+b2.id), 0,0, 0, function(){
-        //     console.log('2nd box attached: ', b2);
-        //   });
-        //   console.log(pdf);
-        // }
-        var options = {
-          orientation: "l",
-          unit: "pt",
-          format: "letter"
-        };
-        // pdf.addPage(options);
-        pdf.addHTML($('#page-container'),0,0,{pagesplit:true},function() {
-           pdf.save('CDC.pdf');
-         });
-        // pdf.addHTML(document.body,function() {
-        //   console.log('added');
-        //   pdf.save('web.pdf');
-        // });
+      console.log('PNG...');
+      domtoimage.toBlob(document.getElementById('page-container'))
+      .then(function (blob) {
+          Window.saveAs(blob, 'my-node.png');
+      })
+      .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+      });
+
+      domtoimage.toJpeg(document.body, { quality: 0.95 })
+      .then(function (dataUrl) {
+          var link = document.createElement('a');
+          link.download = 'my-image-name.jpeg';
+          link.href = dataUrl;
+          link.click();
+      });
+      // domtoimage.toPng(node)
+      //   .then(function (dataUrl) {
+      //     console.log('CREATE IMAGE');
+      //
+      //       // doc.addImage(htmlimage,-110,0);
+      //       var a = document.createElement("a");
+      //       a.download = "data.png";
+      //       a.href = dataUrl;
+	    //       a.click();
+      //
+      //   })
+      //   .catch(function (error) {
+      //       console.error('oops, something went wrong!', error);
+      //   });
+
+      // pdf.addHTML($('#page-container'),0,0,{pagesplit:true},function() {
+      //   //  pdf.save('CDC.pdf');
+      //  });
     });
     </script>
     <script>
@@ -142,6 +133,7 @@
           }
         }
     </script>
+
 </footer>
 
 </html>
