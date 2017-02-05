@@ -15,7 +15,7 @@
     <div id="au">
       <span class="row">
         <a class="box1" id="box1" onclick="selectBox(this)">
-          <img class="img" src="images/temp2.png" align="center"></img>
+          <img class="img" src="images/temp2.png" align="center" width="270px" height="270px" object-fit="contain"></img>
           <!-- <input id="fileDialog" type="file" accept=".png,.jpg" nwworkingdir="C:\"/> -->
           <!-- <input type="text" align="center"/> -->
         </a>
@@ -76,10 +76,48 @@
 
     $('#cmd').click(function() {
         // pdf.addHTML($('#page-container'),function() {
-        pdf.addHTML(document.body,function() {
-
-          // pdf.save('web.pdf');
-        });
+        // pdf.addHTML(document.body,function() {
+        //
+        //   // var ctx = container.getContext('2d');
+        //   // var cdata = ctx.getImageData(0,0,100,100);
+        //   // console.log(ctx);
+        //   // console.log(cdata);
+        //   // pdf.save('web.pdf');
+        //   // pdf();
+        // });
+        // var container = document.getElementById('page-container');
+        // var rows = document.getElementsByClassName('row');
+        // console.log('ROWS:', rows);
+        // var length = rows.length-1;
+        // for(i = 0; i <=length; i++){
+        //   var els = rows[i].children;
+        //   console.log('CHILDREN: for row ', els);
+        //   console.log();
+        //   var b1 = els[0];
+        //   var b2 = els[2];
+        //   console.log('B1:', b1);
+        //   console.log('B2:', b2);
+        //   pdf.addHTML($('#'+b1.id), function(){
+        //     console.log('First box attached: ', b1);
+        //   });
+        //   pdf.addHTML($('#'+b2.id), 0,0, 0, function(){
+        //     console.log('2nd box attached: ', b2);
+        //   });
+        //   console.log(pdf);
+        // }
+        var options = {
+          orientation: "l",
+          unit: "pt",
+          format: "letter"
+        };
+        // pdf.addPage(options);
+        pdf.addHTML($('#page-container'),0,0,{pagesplit:true},function() {
+           pdf.save('CDC.pdf');
+         });
+        // pdf.addHTML(document.body,function() {
+        //   console.log('added');
+        //   pdf.save('web.pdf');
+        // });
     });
     </script>
     <script>

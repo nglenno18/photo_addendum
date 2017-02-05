@@ -9,7 +9,7 @@ var selectBox = function(ev){
   var highlighted = document.getElementById('selectedBox');
   if(highlighted){// highlighted box
     console.log('HIGHLIGHTED BOX: ', highlighted);
-    $('add-images').css("display", "none");
+    $('#add-images').css('display', 'none');
     // $('add-icon').css("visibility", "hidden");
     if(ev.id != "selectedBox"){ //this ISN't the highlighted box
     console.log('THIS SHOULD NOT the selected bx', ev.id);
@@ -31,12 +31,77 @@ var selectBox = function(ev){
   }
 }
 
+// var fd = function(evt){
+//
+//   console.log(event);
+//   console.log(event.srcElement);
+//   clickedElement = event.srcElement;
+//   var file = event.srcElement.files[0].name;
+//
+//   var extension = file.substring(file.lastIndexOf('.'));
+//   console.log(extension);
+//   acceptable = event.srcElement.accept.split(',')
+//   var acc = false;
+//   acceptable.forEach((ex)=>{
+//     console.log('ext: ',ex);
+//     if(ex === extension) acc = true;
+//   });
+//   if(!acc)return alert('File must be an image (".png", ".jpg")');
+//   // console.log('THIS.VAL(): ', $(this).val());
+//   alert(clickedElement.value);
+//   // clickedElement.on('change', function(){
+//   //   var files = $(this).get(0).files;
+//   //   console.log(files);
+//   // });
+//
+//   var length = event.srcElement.files.length;
+//   for(i = 0; i <=(length-2)/2; i++){
+//     console.log('\n\n\n\n\nADD ROWS');
+//     $('#add-row').click();
+//   }
+//   var index = 1;
+//   for(x = 0; x < length; x++){
+//     var i = event.srcElement.files[x];
+//     console.log(i);
+//     i = URL.createObjectURL(i);
+//     var img = new Image();
+//     // img.src = "data:image/png;base64," + event.srcElement.files[x].toString('Base64');
+//     // img.src = "data:image/png;base64," + i.toString('base64');
+//
+//     img.src = i;
+//     var canvas = document.createElement('canvas');
+//     canvas.width = img.width;
+//     canvas.height = img.height;
+//     canvas.getContext('2d').drawImage(img, 0,0);
+//     dataURI = canvas.toDataURL();
+//     console.log(dataURI);
+//
+//
+//     var h;
+//     var w;
+//     $('#box'+index).html('<img src="' + i + '"/>');
+//     index++;
+//   }
+// }
 var w = 1;
 var t=1;
 
 socket.on('connect', function(){
   console.log(socket.id);
-
+  $('#cmd').on('click', function(evt){
+    //send an html file
+    console.log('PDF event: ', evt);
+    console.log(evt.target.ownerDocument);
+    var htmldoc = evt.target.ownerDocument;
+    // console.log('URI: ', htmldoc.documentURI);
+    // console.log('URL: ', htmldoc.URL);
+    console.log(htmldoc);
+    //create string buffer?
+    socket.emit('pdf', htmldoc, function(callback){
+      console.log(evt);
+      console.log('PDF function called');
+    });
+  });
 
   var delivery = new Delivery(socket);
 
